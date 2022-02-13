@@ -1,7 +1,7 @@
 import { IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { add, checkmark, close, pencil } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useParams, useRouteMatch } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import Employee from './Employee';
 import { removeEmployee, saveEmployee, searchEmployeeById, searchEmployees } from './EmployeeApi';
@@ -9,20 +9,24 @@ import { removeEmployee, saveEmployee, searchEmployeeById, searchEmployees } fro
 
 const EmployeeEdit: React.FC = () => {
 
-  const { name, id } = useParams<{ name: string; id: string; }>();
+  const { name } = useParams<{ name: string }>();
+  const routeMatch: any = useRouteMatch("/page/employees/:id");
+  const id = routeMatch?.params?.id;
   const [employee, setEmployee] = useState<Employee>({});
   const history = useHistory();
 
   useEffect( () => {
     search();
-  }, []);
+  }, [history.location.pathname]);
 
-  const search = () => {
-    if(id !== 'new'){
-      let employee = searchEmployeeById(id);
-      setEmployee(employee);
-    }
+  const search = async () => {
+    if(id === 'new'){
+      setEmployee({});
+    }else{
+    let employee = await searchEmployeeById(id);
+    setEmployee(employee);
   }
+}
 
   const save = () => {
      saveEmployee(employee);
@@ -36,7 +40,7 @@ const EmployeeEdit: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>CLIENTES</IonTitle>
+          <IonTitle>EMPLEADOS</IonTitle>
         </IonToolbar>
       </IonHeader>
 

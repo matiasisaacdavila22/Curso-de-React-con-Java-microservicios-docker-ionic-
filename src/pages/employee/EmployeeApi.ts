@@ -1,36 +1,51 @@
 import Employee from "./Employee";
 
-export function searchEmployees() {
-   
-    if(!localStorage['employees']){
-        localStorage[('employees')] = '[]';
-    }
-    let employees = localStorage['employees'];
-    employees = JSON.parse(employees);
-    return employees;
-}
-
-export function removeEmployee(id: string) {
-    let employees = searchEmployees();
-    let indice = employees.findIndex( (employee:Employee) => employee.id === id);
-    employees.splice(indice,1);
-    localStorage['employees'] = JSON.stringify(employees);
-}
-
-export function saveEmployee(employee:Employee) {
-    let employees = searchEmployees();
-    if(employee.id){
-        let indice = employees.findIndex( (element:Employee) => element.id == employee.id);
-        employees[indice] = employee;
-    }else{
-        employee.id = Math.round(Math.random() * 100000).toString();
-        employees.push(employee);
-    }
+export async function searchEmployees() {
+    let url = process.env.REACT_APP_API + 'employees';
+    let response = await fetch( url , {
+         "method": 'GET',
+         "headers": {
+             'content-type': 'application/json'
+         }
+     });
  
-    localStorage['employees'] = JSON.stringify(employees);
-}
-
-export function searchEmployeeById(id: string) {
-    let employees = searchEmployees();
-    return employees.find((employee:Employee) => employee.id == id);
-}
+     return await response.json();
+     
+ }
+ 
+ export async function removeEmployee(id: string) {
+     let url = process.env.REACT_APP_API + 'employees/' + id;
+     let response = await fetch( url , {
+          "method": 'DELETE',
+          "headers": {
+              'content-type': 'application/json'
+          }
+      });
+  
+      return await response.status;
+ }
+ 
+ export async function saveEmployee(employee:Employee) {
+     let url = process.env.REACT_APP_API + 'employees';
+     let response = await fetch( url , {
+          "method": 'POST',
+          "body":JSON.stringify(employee),
+          "headers": {
+              'content-type': 'application/json'
+          }
+      });
+  
+      return response.status;
+ }
+ 
+ export async function searchEmployeeById(id: string) {
+     let url = process.env.REACT_APP_API + 'employees/' + id;
+     let response = await fetch( url , {
+          "method": 'GET',
+          "headers": {
+              'content-type': 'application/json'
+          }
+      });
+  
+      return await response.json();
+ }

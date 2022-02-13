@@ -10,7 +10,7 @@ import { removeCustomer, saveCustomer, searchCustomerById, searchCustomers } fro
 const CustomerEdit: React.FC = () => {
 
   const { name } = useParams<{ name: string }>();
-  const routeMatch: any = useRouteMatch("/page/customer/:id");
+  const routeMatch: any = useRouteMatch("/page/customers/:id");
   const id = routeMatch?.params?.id;
   const [customer, setCustomer] = useState<Customer>({});
   const history = useHistory();

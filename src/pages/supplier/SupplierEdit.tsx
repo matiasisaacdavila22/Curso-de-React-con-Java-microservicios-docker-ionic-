@@ -1,7 +1,7 @@
 import { IonButton, IonButtons, IonCard, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonInput, IonItem, IonLabel, IonMenuButton, IonPage, IonRow, IonTitle, IonToolbar } from '@ionic/react';
 import { add, checkmark, close, pencil } from 'ionicons/icons';
 import { useEffect, useState } from 'react';
-import { useHistory, useParams } from 'react-router';
+import { useHistory, useParams, useRouteMatch } from 'react-router';
 import ExploreContainer from '../../components/ExploreContainer';
 import Supplier from './Supplier';
 import { removeSupplier, saveSupplier, searchSupplierById, searchSuppliers } from './SupplierApi';
@@ -9,20 +9,24 @@ import { removeSupplier, saveSupplier, searchSupplierById, searchSuppliers } fro
 
 const SupplierEdit: React.FC = () => {
 
-  const { name, id } = useParams<{ name: string; id: string; }>();
+  const { name } = useParams<{ name: string }>();
+  const routeMatch: any = useRouteMatch("/page/suppliers/:id");
+  const id = routeMatch?.params?.id;
   const [supplier, setSupplier] = useState<Supplier>({});
   const history = useHistory();
 
   useEffect( () => {
     search();
-  }, []);
+  }, [history.location.pathname]);
 
-  const search = () => {
-    if(id !== 'new'){
-      let supplier = searchSupplierById(id);
-      setSupplier(supplier);
-    }
+  const search = async () => {
+    if(id === 'new'){
+      setSupplier({});
+    }else{
+    let supplier = await searchSupplierById(id);
+    setSupplier(supplier);
   }
+}
 
   const save = () => {
      saveSupplier(supplier);
@@ -36,7 +40,7 @@ const SupplierEdit: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>CLIENTES</IonTitle>
+          <IonTitle>PROVEEDORES</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -47,7 +51,7 @@ const SupplierEdit: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonCard>
-          <IonTitle>{id === 'new' ? 'Agregar Vededor' : 'Editar Vendedor'}</IonTitle>
+          <IonTitle>{id === 'new' ? 'Agregar Proveedor' : 'Editar Proveedor'}</IonTitle>
 
             <IonRow>
               <IonCol>

@@ -17,8 +17,8 @@ const SupplierList: React.FC = () => {
     search();
   }, [history.location.pathname]);
 
-  const search = () => {
-    let suppliers = searchSuppliers();
+  const search = async () => {
+    let suppliers = await searchSuppliers();
       setClientes(suppliers);
   }
 
@@ -28,11 +28,11 @@ const SupplierList: React.FC = () => {
   }
 
   const addSupplier = () => {
-    history.push('/page/supplier/new')
+    history.push('/page/suppliers/new')
   }
 
   const editSupplier = (id:string) => {
-    history.push('/page/supplier/'+id)
+    history.push('/page/suppliers/'+id)
   }
 
 
@@ -43,7 +43,7 @@ const SupplierList: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>CLIENTES</IonTitle>
+          <IonTitle>PROVEEDORES</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -54,7 +54,7 @@ const SupplierList: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonCard>
-          <IonTitle>Gestion de Clientes</IonTitle>
+          <IonTitle>Gestion de Proveedores</IonTitle>
 
             <IonItem>
               <IonButton onClick={addSupplier} color="primary" fill="solid" slot='end' size='default'>

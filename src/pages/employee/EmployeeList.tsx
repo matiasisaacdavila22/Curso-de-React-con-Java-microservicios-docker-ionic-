@@ -17,8 +17,8 @@ const EmployeeList: React.FC = () => {
     search();
   }, [history.location.pathname]);
 
-  const search = () => {
-    let employees = searchEmployees();
+  const search = async () => {
+    let employees = await searchEmployees();
       setClientes(employees);
   }
 
@@ -28,11 +28,11 @@ const EmployeeList: React.FC = () => {
   }
 
   const addEmployee = () => {
-    history.push('/page/employee/new')
+    history.push('/page/employees/new')
   }
 
   const editEmployee = (id:string) => {
-    history.push('/page/employee/'+id)
+    history.push('/page/employees/'+id)
   }
 
 
@@ -43,7 +43,7 @@ const EmployeeList: React.FC = () => {
           <IonButtons slot="start">
             <IonMenuButton />
           </IonButtons>
-          <IonTitle>CLIENTES</IonTitle>
+          <IonTitle>EMPLEADOS</IonTitle>
         </IonToolbar>
       </IonHeader>
 
@@ -54,7 +54,7 @@ const EmployeeList: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <IonCard>
-          <IonTitle>Gestion de Clientes</IonTitle>
+          <IonTitle>Gestion de Empleados</IonTitle>
 
             <IonItem>
               <IonButton onClick={addEmployee} color="primary" fill="solid" slot='end' size='default'>

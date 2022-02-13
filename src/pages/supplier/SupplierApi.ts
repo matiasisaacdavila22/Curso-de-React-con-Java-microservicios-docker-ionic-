@@ -1,36 +1,51 @@
 import Supplier from "./Supplier";
 
-export function searchSuppliers() {
-   
-    if(!localStorage['suppliers']){
-        localStorage[('suppliers')] = '[]';
-    }
-    let suppliers = localStorage['suppliers'];
-    suppliers = JSON.parse(suppliers);
-    return suppliers;
-}
-
-export function removeSupplier(id: string) {
-    let suppliers = searchSuppliers();
-    let indice = suppliers.findIndex( (supplier:Supplier) => supplier.id === id);
-    suppliers.splice(indice,1);
-    localStorage['suppliers'] = JSON.stringify(suppliers);
-}
-
-export function saveSupplier(supplier:Supplier) {
-    let suppliers = searchSuppliers();
-    if(supplier.id){
-        let indice = suppliers.findIndex( (element:Supplier) => element.id == supplier.id);
-        suppliers[indice] = supplier;
-    }else{
-        supplier.id = Math.round(Math.random() * 100000).toString();
-        suppliers.push(supplier);
-    }
+export async function searchSuppliers() {
+    let url = process.env.REACT_APP_API + 'suppliers';
+    let response = await fetch( url , {
+         "method": 'GET',
+         "headers": {
+             'content-type': 'application/json'
+         }
+     });
  
-    localStorage['suppliers'] = JSON.stringify(suppliers);
-}
-
-export function searchSupplierById(id: string) {
-    let suppliers = searchSuppliers();
-    return suppliers.find((supplier:Supplier) => supplier.id == id);
-}
+     return await response.json();
+     
+ }
+ 
+ export async function removeSupplier(id: string) {
+     let url = process.env.REACT_APP_API + 'suppliers/' + id;
+     let response = await fetch( url , {
+          "method": 'DELETE',
+          "headers": {
+              'content-type': 'application/json'
+          }
+      });
+  
+      return await response.status;
+ }
+ 
+ export async function saveSupplier(supplier:Supplier) {
+     let url = process.env.REACT_APP_API + 'suppliers';
+     let response = await fetch( url , {
+          "method": 'POST',
+          "body":JSON.stringify(supplier),
+          "headers": {
+              'content-type': 'application/json'
+          }
+      });
+  
+      return response.status;
+ }
+ 
+ export async function searchSupplierById(id: string) {
+     let url = process.env.REACT_APP_API + 'suppliers/' + id;
+     let response = await fetch( url , {
+          "method": 'GET',
+          "headers": {
+              'content-type': 'application/json'
+          }
+      });
+  
+      return await response.json();
+ }

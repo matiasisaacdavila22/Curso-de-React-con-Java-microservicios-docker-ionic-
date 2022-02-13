@@ -28,11 +28,11 @@ const CustomerList: React.FC = () => {
   }
 
   const addCustomer =  () => {
-    history.push('/page/customer/new')
+    history.push('/page/customers/new')
   }
 
   const editCustomer = (id:string) => {
-    history.push('/page/customer/'+id)
+    history.push('/page/customers/'+id)
   }
 
 
